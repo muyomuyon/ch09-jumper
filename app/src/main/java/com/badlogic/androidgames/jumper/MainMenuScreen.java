@@ -1,9 +1,5 @@
 package com.badlogic.androidgames.jumper;
 
-import java.util.List;
-
-import javax.microedition.khronos.opengles.GL10;
-
 import com.badlogic.androidgames.framework.Game;
 import com.badlogic.androidgames.framework.Input.TouchEvent;
 import com.badlogic.androidgames.framework.gl.Camera2D;
@@ -13,15 +9,23 @@ import com.badlogic.androidgames.framework.math.OverlapTester;
 import com.badlogic.androidgames.framework.math.Rectangle;
 import com.badlogic.androidgames.framework.math.Vector2;
 
+import java.util.List;
+
+import javax.microedition.khronos.opengles.GL10;
+
 public class MainMenuScreen extends GLScreen {
 	Camera2D guiCam;
 	SpriteBatcher batcher;
+
+    /*UI要素がタッチされたかどうか判定するためのRectangle群*/
 	Rectangle soundBounds;
 	Rectangle playBounds;
 	Rectangle highscoresBounds;
 	Rectangle helpBounds;
+
 	Vector2 touchPoint;
-	
+
+    //コンストラクタ
 	public MainMenuScreen(Game game) {
 		super(game);
 		guiCam = new Camera2D(glGraphics, 320, 480);

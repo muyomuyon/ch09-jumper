@@ -1,12 +1,12 @@
 package com.badlogic.androidgames.jumper;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import com.badlogic.androidgames.framework.gl.Animation;
 import com.badlogic.androidgames.framework.gl.Camera2D;
 import com.badlogic.androidgames.framework.gl.SpriteBatcher;
 import com.badlogic.androidgames.framework.gl.TextureRegion;
 import com.badlogic.androidgames.framework.impl.GLGraphics;
+
+import javax.microedition.khronos.opengles.GL10;
 
 public class WorldRenderer {
 	static final float FRUSTUM_WIDTH = 10;

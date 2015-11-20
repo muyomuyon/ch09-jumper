@@ -1,9 +1,9 @@
 package com.badlogic.androidgames.framework.gl;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import com.badlogic.androidgames.framework.impl.GLGraphics;
 import com.badlogic.androidgames.framework.math.Vector2;
+
+import javax.microedition.khronos.opengles.GL10;
 
 public class Camera2D {
 	public final Vector2 position;

@@ -1,9 +1,5 @@
 package com.badlogic.androidgames.jumper;
 
-import java.util.List;
-
-import javax.microedition.khronos.opengles.GL10;
-
 import com.badlogic.androidgames.framework.Game;
 import com.badlogic.androidgames.framework.Input.TouchEvent;
 import com.badlogic.androidgames.framework.gl.Camera2D;
@@ -15,7 +11,12 @@ import com.badlogic.androidgames.framework.math.Rectangle;
 import com.badlogic.androidgames.framework.math.Vector2;
 import com.badlogic.androidgames.jumper.World.WorldListener;
 
+import java.util.List;
+
+import javax.microedition.khronos.opengles.GL10;
+
 public class GameScreen extends GLScreen {
+
 	static final int GAME_READY = 0;
 	static final int GAME_RUNNING = 1;
 	static final int GAME_PAUSED = 2;
@@ -42,6 +43,7 @@ public class GameScreen extends GLScreen {
 		guiCam = new Camera2D(glGraphics, 320, 480);
 		touchPoint = new Vector2();
 		batcher = new SpriteBatcher(glGraphics, 1000);
+
 		worldListener = new WorldListener() {
 			@Override
 			public void jump() {
@@ -63,6 +65,7 @@ public class GameScreen extends GLScreen {
 				Assets.playSound(Assets.coinSound);
 			}
 		};
+
 		world = new World(worldListener);
 		renderer = new WorldRenderer(glGraphics, batcher, world);
 		pauseBounds = new Rectangle(320- 64, 480- 64, 64, 64);	
@@ -122,6 +125,7 @@ public class GameScreen extends GLScreen {
 		}
 
 		world.update(deltaTime, game.getInput().getAccelX());
+
 		if(world.score != lastScore) {
 			lastScore = world.score;
 			scoreString = "" + lastScore;
@@ -235,7 +239,7 @@ public class GameScreen extends GLScreen {
 	
 	private void presentPaused() {
 		batcher.drawSprite(160, 240, 192, 96, Assets.pauseMenu);
-		Assets.font.drawText(batcher, scoreString, 16, 480-20);
+//		Assets.font.drawText(batcher, scoreString, 16, 480-20);
 	}
 	
 	private void presentLevelEnd() {

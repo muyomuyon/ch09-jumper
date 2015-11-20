@@ -83,7 +83,7 @@ public class Assets {
 				new TextureRegion(items, 64, 192, 64, 16),
 				new TextureRegion(items, 64, 208, 64, 16));
 
-		font = new Font(items, 224, 0, 16, 16, 20);	
+		font = new Font(items, 224, 0, 16, 16, 20);
 		
 		music = game.getAudio().newMusic("music.mp3");
 		music.setLooping(true);

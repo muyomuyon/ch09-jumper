@@ -1,11 +1,11 @@
 package com.badlogic.androidgames.jumper;
 
+import com.badlogic.androidgames.framework.math.OverlapTester;
+import com.badlogic.androidgames.framework.math.Vector2;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import com.badlogic.androidgames.framework.math.OverlapTester;
-import com.badlogic.androidgames.framework.math.Vector2;
 
 public class World {
 	public interface WorldListener {
@@ -16,7 +16,7 @@ public class World {
 	}
 	
 	public static final float WORLD_WIDTH = 10;
-	public static final float WORLD_HEIGHT = 15 * 20;
+	public static final float WORLD_HEIGHT = 15 * 3;
 	public static final int WORLD_STATE_RUNNING = 0;
 	public static final int WORLD_STATE_NEXT_LEVEL = 1;
 	public static final int WORLD_STATE_GAME_OVER = 2;
@@ -28,6 +28,7 @@ public class World {
 	public final List<Squirrel> squirrels;
 	public final List<Coin> coins;
 	public Castle castle;
+
 	public final WorldListener listener;
 	public final Random rand;
 
@@ -49,15 +50,21 @@ public class World {
 		this.score = 0;
 		this.state = WORLD_STATE_RUNNING;
 	}	
-	
+
+    /*オブジェクトを実際に生成し、ワールドに配置する：ランダムに生成する。*/
 	private void generateLevel() {
-		float y = Platform.PLATFORM_HEIGHT / 2;
+        /*ワールドの一番下をy=0として開始する。*/
+		float makeObjectY = Platform.PLATFORM_HEIGHT / 2;
+
+        /*Bobのジャンプの高さを計算して代入する。テキストの設定では、ジャンプの初期速度は11、重力加速度は13。
+        * 高さ = 速度 * 速度 / (2 * 重力) ＝ 11 * 11 / (2 * 13) ~= 4.6*/
 		float maxJumpHeight = Bob.BOB_JUMP_VELOCITY * Bob.BOB_JUMP_VELOCITY / (2 * -gravity.y);
-		while (y < WORLD_HEIGHT - WORLD_WIDTH / 2) {
+
+		while (makeObjectY < WORLD_HEIGHT - WORLD_WIDTH / 2) {
 			int type = rand.nextFloat() > 0.8f ? Platform.PLATFORM_TYPE_MOVING : Platform.PLATFORM_TYPE_STATIC;
 			float x = rand.nextFloat() * (WORLD_WIDTH - Platform.PLATFORM_WIDTH) + Platform.PLATFORM_WIDTH / 2;
 
-			Platform platform = new Platform(type, x, y);
+			Platform platform = new Platform(type, x, makeObjectY);
 			platforms.add(platform);
 
 			if (rand.nextFloat() > 0.9f && type != Platform.PLATFORM_TYPE_MOVING) {
@@ -65,7 +72,7 @@ public class World {
 				springs.add(spring);
 			}
 
-			if (y > WORLD_HEIGHT / 3 && rand.nextFloat() > 0.8f) {
+			if (makeObjectY > WORLD_HEIGHT / 3 && rand.nextFloat() > 0.8f) {
 				Squirrel squirrel = new Squirrel(platform.position.x + rand.nextFloat(), platform.position.y + Squirrel.SQUIRREL_HEIGHT + rand.nextFloat() * 2);
 				squirrels.add(squirrel);
 			}
@@ -75,11 +82,11 @@ public class World {
 				coins.add(coin);
 			}
 
-			y += (maxJumpHeight - 0.5f);
-			y -= rand.nextFloat() * (maxJumpHeight / 3);
+			makeObjectY += (maxJumpHeight - 0.5f);/*ジャンプの高さよりちょっと下に作業場を置く*/
+			makeObjectY -= rand.nextFloat() * (maxJumpHeight / 3);
 		}
 
-		castle = new Castle(WORLD_WIDTH / 2, y);
+		castle = new Castle(WORLD_WIDTH / 2, makeObjectY);
 	}
 
 	public void update(float deltaTime, float accelX) {
@@ -93,8 +100,10 @@ public class World {
 	}
 
 	private void updateBob(float deltaTime, float accelX) {
+        /*Bobがワールドの最下端にぶつかった場合はジャンプさせる（bob.hitPlatform()を呼び出す）*/
 		if (bob.state != Bob.BOB_STATE_HIT && bob.position.y <= 0.5f)
 			bob.hitPlatform();
+        /*Bobが死んでいない場合は加速度センサーのx軸の値に基づいてBobの横方向の速度を更新する。*/
 		if (bob.state != Bob.BOB_STATE_HIT)
 			bob.velocity.x = -accelX / 10 * Bob.BOB_MOVE_VELOCITY;
 		bob.update(deltaTime);
@@ -138,6 +147,7 @@ public class World {
 	}
 	
 	private void checkPlatformCollisions() {
+        /*Bobが上昇中は足場との衝突判定を行わない。*/
 		if (bob.velocity.y > 0)
 			return;
 
@@ -162,7 +172,7 @@ public class World {
 		for (int i = 0; i < len; i++) {
 			Squirrel squirrel = squirrels.get(i);
 			if (OverlapTester.overlapRectangles(squirrel.bounds, bob.bounds)) {
-				bob.hitSquirrel();
+//				bob.hitSquirrel();
 				listener.hit();
 			}
 		}
@@ -179,7 +189,7 @@ public class World {
 				score += Coin.COIN_SCORE;
 			}
 		}
-
+        /*Bobが上昇中なら、バネとの衝突判定は行わない*/
 		if (bob.velocity.y > 0)
 			return;
 

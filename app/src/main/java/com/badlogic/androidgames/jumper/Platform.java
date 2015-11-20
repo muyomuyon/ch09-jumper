@@ -3,18 +3,28 @@ package com.badlogic.androidgames.jumper;
 import com.badlogic.androidgames.framework.DynamicGameObject;
 
 public class Platform extends DynamicGameObject {
+    /*足場の幅と高さ*/
 	public static final float PLATFORM_WIDTH = 2;
 	public static final float PLATFORM_HEIGHT = 0.5f;
+
+    /*静止している足場*/
 	public static final int PLATFORM_TYPE_STATIC = 0;
+    /*動いている足場*/
 	public static final int PLATFORM_TYPE_MOVING = 1;
+
+    /*壊れていない足場*/
 	public static final int PLATFORM_STATE_NORMAL = 0;
+    /*壊れている足場*/
 	public static final int PLATFORM_STATE_PULVERIZING = 1;
+    /*壊れる時間（アニメーション時間*段階数）*/
 	public static final float PLATFORM_PULVERIZE_TIME = 0.2f * 4;
+
+    /*足場が動く速度*/
 	public static final float PLATFORM_VELOCITY = 2;
 	
-	int type;
-	int state;
-	float stateTime;
+	int type;/*足場のタイプ（動くか動かないか）*/
+	int state;/*足場の状態（壊れていないか壊れているか）*/
+	float stateTime;/*その状態でいる時間*/
 	
 	public Platform(int type, float x, float y) {
 		super(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT);

@@ -1,9 +1,5 @@
 package com.badlogic.androidgames.jumper;
 
-import java.util.List;
-
-import javax.microedition.khronos.opengles.GL10;
-
 import com.badlogic.androidgames.framework.Game;
 import com.badlogic.androidgames.framework.Input.TouchEvent;
 import com.badlogic.androidgames.framework.gl.Camera2D;
@@ -13,13 +9,17 @@ import com.badlogic.androidgames.framework.math.OverlapTester;
 import com.badlogic.androidgames.framework.math.Rectangle;
 import com.badlogic.androidgames.framework.math.Vector2;
 
+import java.util.List;
+
+import javax.microedition.khronos.opengles.GL10;
+
 public class HighscoresScreen extends GLScreen {
 	Camera2D guiCam;
 	SpriteBatcher batcher;
 	Rectangle backBounds;
 	Vector2 touchPoint;
 	String[] highScores;
-	float xOffset = 0;
+	float xOffset = 0;//ハイスコア行が画面の真ん中に配置されるように調整するためのオフセット値。
 	
 	public HighscoresScreen(Game game) {
 		super(game);
@@ -31,9 +31,11 @@ public class HighscoresScreen extends GLScreen {
 		highScores = new String[5];
 		for(int i = 0; i < 5; i++) {
 			highScores[i] = (i + 1) + ". " + Settings.highscores[i];
+            /*ハイスコアに対して作成する文字列のうち、最も長い文字列の長さを調べてxOffsetに代入*/
 			xOffset = Math.max(highScores[i].length() * Assets.font.glyphWidth, xOffset);
 		}
 		//xOffset = 160 - xOffset / 2;
+        /*スクリーンの横幅の中心160から最も長い文字列の半分を引く、そこにグリフ幅の半分を足す*/
 		xOffset = 160 - xOffset / 2 + Assets.font.glyphWidth / 2;
 
 	}	

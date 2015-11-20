@@ -1,9 +1,5 @@
 package com.badlogic.androidgames.jumper;
 
-import java.util.List;
-
-import javax.microedition.khronos.opengles.GL10;
-
 import com.badlogic.androidgames.framework.Game;
 import com.badlogic.androidgames.framework.Input.TouchEvent;
 import com.badlogic.androidgames.framework.gl.Camera2D;
@@ -14,6 +10,10 @@ import com.badlogic.androidgames.framework.impl.GLScreen;
 import com.badlogic.androidgames.framework.math.OverlapTester;
 import com.badlogic.androidgames.framework.math.Rectangle;
 import com.badlogic.androidgames.framework.math.Vector2;
+
+import java.util.List;
+
+import javax.microedition.khronos.opengles.GL10;
 
 public class HelpScreen5 extends GLScreen {
 	Camera2D guiCam;
